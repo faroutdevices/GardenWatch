@@ -1,0 +1,106 @@
+
+<!-- saved from url=(0065)http://faroutdevices.com/Garden_Moisture_Arduino_Code_Example.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head><body><pre>
+/*
+ * Blink
+ * Sending basic data to web service using GM862 
+ */
+
+#include <softwareserial.h>
+
+int rxPin = 0;
+int txPin = 1;
+int analogTempPin = 1;
+int analogLightPin = 2;
+int analogMoisturePin = 3;
+
+// set up a new serial port
+SoftwareSerial serial=SoftwareSerial(rxPin,txPin);
+
+void setup()                    // run once, when the sketch starts
+{
+  pinMode(rxPin, INPUT);
+  pinMode(txPin, OUTPUT);
+
+  // set the data rate for the SoftwareSerial port
+  serial.begin(9600);
+  
+                delay(2000);
+  
+                //this is new can't hurt...
+                serial.print("AT#BND=1\r\n");
+                delay(1000);
+                //end this is new
+                
+                serial.print("AT+CGDCONT=1,\"IP\",\"WAP.CINGULAR\"\r\n");
+                delay(1000);
+                serial.print("AT#USERID=\"WAP@CINGULARGPRS.COM\"\r\n");
+                delay(1000);
+                serial.print("AT#PASSW=\"CINGULAR1\"\r\n");
+                delay(1000);
+                serial.print("AT#GPRS=0\r\n");
+                delay(1000);
+                serial.print("AT#GPRS=1\r\n");
+                delay(3000);
+                serial.print("AT#SKTD=0,80,\"www.lusciousdata.net\"\r\n");
+                delay(5000);
+                //serial.print("GET /SERVICE.ASMX/HelloWorld?temperature=Arduino_Starting HTTP/1.0\r\n Host: www.lusciousdata.net\r\n\r\n");
+                //serial.print("GET /SERVICE.ASMX/HelloWorld?temperature=Arduino_Starting&amp;light=Arduino_Starting&amp;moisture=Arduino_Starting HTTP/1.0\r\n Host: www.lusciousdata.net\r\n\r\n");                
+                serial.print("GET /SERVICE.ASMX/HelloWorld?temperature=nada");                
+                serial.print("&amp;light=nada");                
+                serial.print("&amp;moisture=Arduino_Starting");                               
+                serial.print(" HTTP/1.0\r\n Host: www.lusciousdata.net\r\n\r\n");                
+                
+}
+
+void loop()
+{
+/*
+this works but turning off to save money on SMS fees!
+delay(3000);
+
+  serial.print("AT+CMGF=1\r\n");
+  delay(300);
+  serial.print("AT+CMGS=");
+  delay(300);
+  // Replace with a valid phone number
+  serial.print("+12067909610\r\n");
+  delay(300);
+  serial.print("Hello from Arduino.");
+  delay(300);
+
+  // End the SMS with a control-z
+  serial.print(0x1A,BYTE);  
+  
+
+ delay(3000);
+  */
+                delay(1800000); 
+                  
+                serial.print("AT+CGDCONT=1,\"IP\",\"WAP.CINGULAR\"\r\n");
+                delay(1000);
+                serial.print("AT#USERID=\"WAP@CINGULARGPRS.COM\"\r\n");
+                delay(1000);
+                serial.print("AT#PASSW=\"CINGULAR1\"\r\n");
+                delay(1000);
+                serial.print("AT#GPRS=0\r\n");
+                delay(1000);
+                serial.print("AT#GPRS=1\r\n");
+                delay(3000);
+                serial.print("AT#SKTD=0,80,\"www.lusciousdata.net\"\r\n");
+                delay(5000);
+                //serial.print("GET /SERVICE.ASMX/HelloWorld?infoin=Hi_from_arduino_looppppp HTTP/1.0\r\n Host: www.lusciousdata.net\r\n\r\n");
+                
+                serial.print("GET /SERVICE.ASMX/HelloWorld?temperature=");                
+                serial.print(analogRead(analogTempPin));
+                serial.print("&amp;light=Unit_2");                
+                serial.print(analogRead(analogLightPin));
+                serial.print("&amp;moisture=");                
+                serial.print(analogRead(analogMoisturePin));                
+                serial.print(" HTTP/1.0\r\n Host: www.lusciousdata.net\r\n\r\n");
+                
+               
+}
+
+
+</softwareserial.h></pre></body></html>
